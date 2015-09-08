@@ -1,7 +1,11 @@
 # Written by flopy init script
 
 import numpy as np
+import os
 import flopy
+
+# Workspace where parameters are saved
+wsPar = 'C:\Users\Bas\Google Drive\CiTG MSc\CIE5060 - Thesis\scripts\\'
 
 # In[Configure packages]
 
@@ -34,7 +38,7 @@ delr = 1.0
 delc = 10.0
 laycbd = 0
 top = 3.0
-botm = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\dis_botm.npy')
+botm = np.load(os.path.join(wsPar, 'dis_botm.npy'))
 perlen = 1.0
 nstp = 8
 tsmult = 1.0
@@ -54,7 +58,7 @@ dis = flopy.modflow.mfdis.ModflowDis(model=ml, nlay=nlay, nrow=nrow, ncol=ncol, 
 ##############################################################################
 # bas6
 model = ml
-ibound = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\bas6_ibound.npy')
+ibound = np.load(os.path.join(wsPar, 'bas6_ibound.npy'))
 strt = 0.0
 ifrefm = False
 ixsec = False
@@ -82,9 +86,9 @@ iwdflg = 0
 wetfct = None
 iwetit = None
 ihdwet = None
-hk = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\lpf_hk.npy')
+hk = np.load(os.path.join(wsPar, 'lpf_hk.npy'))
 hani = 0.0
-vka = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\lpf_vka.npy')
+vka = np.load(os.path.join(wsPar, 'lpf_vka.npy'))
 ss = 1e-05
 sy = 0.0
 vkcb = 0.0
@@ -105,7 +109,7 @@ lpf = flopy.modflow.mflpf.ModflowLpf(model=ml, laytyp=laytyp, layavg=layavg, cha
 # wel
 model = ml
 ipakcb = 53
-stress_period_data = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\wel_stress_period_data.npy').all()
+stress_period_data = np.load(os.path.join(wsPar, 'wel_stress_period_data.npy')).all()
 dtype = np.dtype([('k', '<i4'), ('i', '<i4'), ('j', '<i4'), ('flux', '<f4')])
 extension = ['wel']
 unitnumber = 20
@@ -119,7 +123,7 @@ wel = flopy.modflow.mfwel.ModflowWel(model=ml, ipakcb=ipakcb, stress_period_data
 # riv
 model = ml
 ipakcb = 53
-stress_period_data = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\riv_stress_period_data.npy').all()
+stress_period_data = np.load(os.path.join(wsPar, 'riv_stress_period_data.npy')).all()
 dtype = np.dtype([('k', '<i4'), ('i', '<i4'), ('j', '<i4'), ('stage', '<f4'), ('cond', '<f4'), ('rbot', '<f4')])
 extension = ['riv']
 unitnumber = 18
@@ -138,7 +142,7 @@ chedfm = None
 cddnfm = None
 cboufm = None
 compact = False
-stress_period_data = np.load('C:\\Users\\Bas\\Google Drive\\CiTG MSc\\CIE5060 - Thesis\\scripts\\oc_stress_period_data.npy').all()
+stress_period_data = np.load(os.path.join(wsPar, 'oc_stress_period_data.npy')).all()
 extension = ['oc', 'hds', 'ddn', 'cbc']
 unitnumber = [14, 51, 52, 53]
 

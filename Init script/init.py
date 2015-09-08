@@ -104,7 +104,10 @@ class flopyinit():
         f = open(fn, 'w')
         f.write('# ' + header + '\n\n')
         f.write('import numpy as np\n')
+        f.write('import os\n')
         f.write('import flopy\n\n')
+        f.write('# Workspace where parameters are saved\n')
+        f.write("wsPar = '" + self.ws + "\\'\n\n")
         f.write('# In[Configure packages]\n')
 
         for ipack, packstr in enumerate(c):
@@ -137,8 +140,6 @@ class flopyinit():
         import numpy as np
         import flopy
 
-        np.set_printoptions(threshold='nan')
-
         if isinstance(tbstr, str):
             return "'" + tbstr + "'"
 
@@ -146,7 +147,7 @@ class flopyinit():
             if len(np.unique(tbstr)) != 1:
                 path = os.path.join(self.ws, packstr + '_' + arg)
                 np.save(path, tbstr)
-                string = "np.load('" + self.ws + packstr + '_' + arg + ".npy')"
+                string = "np.load(os.path.join(wsPar, '" + packstr + '_' + arg + ".npy'))"
             else:
                 string = str(np.unique(tbstr))
             return string
@@ -154,20 +155,20 @@ class flopyinit():
         elif isinstance(tbstr, flopy.utils.util_array.util_3d) or isinstance(tbstr, flopy.utils.util_array.util_2d):
             if len(np.unique(tbstr.array)) != 1:
                 np.save(self.ws + packstr + '_' + arg, tbstr.array)
-                string = "np.load('" + self.ws + packstr + '_' + arg + ".npy')"
+                string = "np.load(os.path.join(wsPar, '" + packstr + '_' + arg + ".npy'))"
             else:
                 string = str(np.unique(tbstr.array)[0])
             return string
 
         elif isinstance(tbstr, flopy.utils.util_list.mflist):
             np.save(self.ws + packstr + '_' + arg, tbstr.data)
-            string = "np.load('" + self.ws + packstr + '_' + arg + ".npy').all()"
+            string = "np.load(os.path.join(wsPar, '" + packstr + '_' + arg + ".npy')).all()"
             return string
 
         elif isinstance(tbstr, dict):
             if len(tbstr.keys()) > 20:
                 np.save(self.ws + packstr + '_' + arg, tbstr)
-                string = "np.load('" + self.ws + packstr + '_' + arg + ".npy').all()"
+                string = "np.load(os.path.join(wsPar, '" + packstr + '_' + arg + ".npy')).all()"
                 return string
             else:
                 return str(tbstr)
